@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>User Information</title>
+	<link rel="stylesheet" href="/static/css/styles.css" type="text/css">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+</head>
+<body>
+	<nav>
+    	<div>
+    		<ul>
+    			<li>Test App</li>
+    			<li><a href="/">Home</a></li>
+    		</ul>
+    	</div>
+    	<div><h4><a href="/logout">Log Out</a></h4></div>
+    	<a href="/dashboard/admin"><button>Return to Dashboard</button></a>
+    </nav>
+	<div id="wrapper">
+
+		<h1>{{ user[0]['first_name'] }}</h1>
+		<h4>Registered at: {{ user[0]['created_at'] }} </h4>
+		<h4>User ID: #{{ user[0]['id'] }} </h4>
+		<h4>Email address: {{ user[0]['email'] }} </h4>
+		<h4>Description: {{ user[0]['description'] }} </h4>
+	</div>
+	<h2>Leave a message for {{ user[0]['first_name'] }}</h2>
+	<form action="post_message/{{ user[0]['id'] }}" method="POST">
+		<textarea cols="60" rows="8" name="message"></textarea>
+		<input type="submit" value="Post"></input>
+	</form>
+
+	{% for message in messages: %}
+
+		<div style="margin-left: 40px;">
+			<h3>{{ message['first_name'] }}{{ message['last_name'] }} wrote:</h3><h4>{{message['created_at']}}</h4>
+			<p style="background-color: #EAE6DE; width: 60%; margin: 20px; padding: 20px;">{{message['message']}}</p>
+				{% for comment in comments: %}
+
+					{% if comment['message_id'] == message['message_id'] %}
+					<div style="background-color: #F6F5F1; width: 40%; margin-left: 100px;">
+					<h4>{{ comment['first_name'] }}{{ comment['last_name'] }} wrote:</h4><h6>{{comment['created_at']}}</h6>
+					<p>{{comment['comment']}}</p>
+					</div>
+					{% endif %}
+				{% endfor %}
+				<form action="post_comment/{{message['message_id']}}/{{ user[0]['id'] }}" method="POST" style="margin-left: 600px; display: block">
+					<textarea rows="2" cols="30" name="comment"></textarea>
+					<input type="submit" value="Comment"></input>
+				</form>
+			
+		</div>
+
+	{% endfor %}
+
+</body>
+</html>

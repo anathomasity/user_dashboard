@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Edit Profile</title>
+	<link rel="stylesheet" href="/static/css/styles.css" type="text/css">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+</head>
+<body>
+	<nav>
+    	<div>
+    		<ul>
+    			<li>Test App</li>
+    			<li><a href="/">Home</a></li>
+    		</ul>
+    	</div>
+    	<div><h4><a href="/logout">Log Out</a></h4></div>
+    </nav>
+	<div id="wrapper">	
+		<h3>Edit Profile</h3>
+		<div>
+			<div>
+				<h4>Edit Information</h4>
+				<form action="/editprofile/1/{{session['id']}}"  method="POST"> 
+					First Name: <input type="text" name="first_name" value="{{user['first_name']}}"></input>
+					Last Name: <input type="text" name="last_name" value="{{user['last_name']}}"></input>
+					Email Address: <input type="text" name="email" value="{{user['email']}}"></input>
+					<input type="submit" value="Save"></input>
+				</form>
+			</div>
+			<div>
+				<h4>Change Password</h4>
+				{% with messages = get_flashed_messages(category_filter=['paserrors']) %}
+		  				{% if messages %}
+		    				{% for message in messages %}
+		      					<p style="color:red">{{ message }}</p>
+		    				{% endfor %}
+		  				{% endif %}
+					{% endwith %}
+				<form action="/editprofile/2/{{session['id']}}" method="POST">
+					Password: <input type="password" name="password"></input>
+					Password Confirmation: <input type="password" name="pw_confirmation"></input>
+					<input type="submit" value="Update Password"></input>
+				</form>
+			</div>
+		</div>
+		<div>
+			<h4>Edit Description</h4>
+			<form action="/editprofile/3/{{session['id']}}" method="POST">
+				<textarea cols="40" rows="10" name="description"></textarea>
+				<input type="submit" value="Save"></input>
+			</form>
+		</div>
+	</div>
+</body>
+</html>
